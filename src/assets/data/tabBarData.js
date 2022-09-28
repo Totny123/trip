@@ -1,26 +1,22 @@
 const tabBarData = [
   {
     text: "首页",
-    imgURL: "baidu.png",
-    activeImgURL: "home.webp",
+    icon: "home-o",
     path: "/home",
   },
   {
     text: "收藏",
-    imgURL: "baidu.png",
-    activeImgURL: "home.webp",
+    icon: "like-o",
     path: "/favor",
   },
   {
     text: "订单",
-    imgURL: "baidu.png",
-    activeImgURL: "home.webp",
+    icon: "orders-o",
     path: "/order",
   },
   {
     text: "消息",
-    imgURL: "baidu.png",
-    activeImgURL: "home.webp",
+    icon: "envelop-o",
     path: "/message",
   },
 ];

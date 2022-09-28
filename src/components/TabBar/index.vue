@@ -1,15 +1,8 @@
 <template>
   <div class="tab-bar">
-    <van-tabbar v-model="currentIndex">
+    <van-tabbar v-model="currentIndex" active-color="orange">
       <template v-for="item in tabBarData">
-        <van-tabbar-item icon="home-o" :to="item.path">
-          <template #icon="props">
-            <img
-              class="test"
-              :src="getImgURL(props.active ? item.activeImgURL : item.imgURL)"
-              alt=""
-            />
-          </template>
+        <van-tabbar-item :icon="item.icon" :to="item.path">
           <span>{{ item.text }}</span>
         </van-tabbar-item>
       </template>
@@ -18,9 +11,8 @@
 </template>
 
 <script setup>
-import tabBarData from "@/assets/data/tabBarData";
-import { getImgURL } from "@/utils";
 import { ref } from "vue";
+import tabBarData from "@/assets/data/tabBarData";
 
 const currentIndex = ref(0);
 </script>
