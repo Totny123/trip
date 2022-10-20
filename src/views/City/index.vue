@@ -15,16 +15,21 @@
       </van-tabs>
     </div>
     <div class="content">
-      <div v-for="item in currentCityGroup?.cities">{{ item }}</div>
+      <template v-for="(groupValue, groupKey) in allCities" :key="groupKey">
+        <div v-show="activeTab === groupKey">
+          <CityGroup :groupValue="groupValue" />
+        </div>
+      </template>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useCityStore } from "@/stores/modules/city";
 import { storeToRefs } from "pinia";
+import CityGroup from "./components/CityGroup.vue";
 
 const router = useRouter();
 const searchValue = ref("");
@@ -37,8 +42,6 @@ const onCancel = () => {
 const cityStore = useCityStore();
 cityStore.fetchAllCity();
 const { allCities } = storeToRefs(cityStore);
-
-const currentCityGroup = computed(() => allCities.value[activeTab.value]);
 </script>
 
 <style lang="less" scoped>
@@ -47,6 +50,10 @@ const currentCityGroup = computed(() => allCities.value[activeTab.value]);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+.top {
+  position: relative;
+  z-index: 99;
 }
 .content {
   flex: 1;
