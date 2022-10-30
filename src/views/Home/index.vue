@@ -11,6 +11,10 @@
 <script setup>
 import NavBar from "./components/NavBar.vue";
 import Search from "./components/Search.vue";
+import useHomeStore from "@/stores/modules/home";
+
+const homeStore = useHomeStore();
+homeStore.fetchHotSuggests();
 </script>
 
 <style lang="less" scoped>

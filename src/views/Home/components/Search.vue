@@ -29,6 +29,27 @@
         @confirm="onDateRangeConfirm"
       />
     </div>
+    <div class="other-options">
+      <div class="other-options-item">
+        <span class="other-options-price">价格不限</span>
+        <span>人数不限</span>
+      </div>
+      <div class="other-options-item">
+        <span>关键字/位置/民宿名</span>
+      </div>
+    </div>
+    <div class="hot-suggest-list">
+      <template v-for="(item, index) in hotSuggests" :key="index">
+        <span
+          class="hot-suggest"
+          :style="{
+            color: item.tagText.color,
+            background: item.tagText.background.color,
+          }"
+          >{{ item.tagText.text }}</span
+        >
+      </template>
+    </div>
   </div>
 </template>
 
@@ -38,6 +59,7 @@ import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { formatDate } from "@/utils";
+import useHomeStore from "@/stores/modules/home";
 
 // 城市点击逻辑
 const router = useRouter();
@@ -88,6 +110,11 @@ const onDateRangeConfirm = (date) => {
 };
 
 /* ----------  end  ---------- */
+
+/* ----------  start: 热门建议  ---------- */
+const homeStore = useHomeStore();
+const { hotSuggests } = storeToRefs(homeStore);
+/* ----------  end  ---------- */
 </script>
 
 <style lang="less" scoped>
@@ -129,6 +156,35 @@ const onDateRangeConfirm = (date) => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+}
+.other-options {
+  margin-top: 20px;
+  padding: 0 20px;
+  color: gray;
+  font-size: 12px;
+  &-item {
+    display: flex;
+    span {
+      display: inline-block;
+      height: 44px;
+    }
+  }
+  .other-options-price {
+    flex: 1;
+  }
+}
+.hot-suggest-list {
+  padding: 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  .hot-suggest {
+    color: red;
+    padding: 4px 8px;
+    margin: 5px;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 1;
   }
 }
 </style>
