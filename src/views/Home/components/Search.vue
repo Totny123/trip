@@ -50,6 +50,9 @@
         >
       </template>
     </div>
+    <div class="search-button">
+      <button @click="searchHandle">开始搜索</button>
+    </div>
   </div>
 </template>
 
@@ -114,6 +117,21 @@ const onDateRangeConfirm = (date) => {
 /* ----------  start: 热门建议  ---------- */
 const homeStore = useHomeStore();
 const { hotSuggests } = storeToRefs(homeStore);
+/* ----------  end  ---------- */
+
+/* ----------  start: 搜索按钮点击  ---------- */
+
+const searchHandle = () => {
+  router.push({
+    path: "/search",
+    query: {
+      startDate: startDate.value,
+      endDate: endDate.value,
+      currentCity: currentCity.value.cityName,
+    },
+  });
+};
+
 /* ----------  end  ---------- */
 </script>
 
@@ -185,6 +203,18 @@ const { hotSuggests } = storeToRefs(homeStore);
     border-radius: 8px;
     font-size: 12px;
     line-height: 1;
+  }
+}
+.search-button {
+  padding: 0 20px;
+  margin-top: 10px;
+  button {
+    width: 100%;
+    height: 44px;
+    font-size: 18px;
+    background-color: orange;
+    color: white;
+    border-radius: 22px;
   }
 }
 </style>
