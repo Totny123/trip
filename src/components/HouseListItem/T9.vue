@@ -10,7 +10,7 @@
           color="#fff"
           allow-half
           readonly
-          :model-value="itemData.commentScore"
+          :model-value="Number(itemData.commentScore)"
         />
         <span>￥{{ itemData.finalPrice }}</span>
       </div>
