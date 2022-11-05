@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 const getImgURL = (url) =>
   new URL(`../assets/img/${url}`, import.meta.url).href;
 
-const formatDate = (date) => dayjs(date).format("MM月DD日");
+const formatDate = (date, template = "MM月DD日") =>
+  dayjs(date).format(template);
 
 export { getImgURL, formatDate };

@@ -6,7 +6,9 @@
     </div>
     <Search />
     <Categories />
-    <div v-if="searchBtnShow">搜索框xxxxxxxxxxxxxxxxx</div>
+    <div v-if="searchBtnShow">
+      <SearchBar />
+    </div>
     <HouseList />
   </div>
 </template>
@@ -17,13 +19,16 @@ import Search from "./components/Search.vue";
 import Categories from "./components/Categories.vue";
 import HouseList from "./components/HouseList.vue";
 import useHomeStore from "@/stores/modules/home";
+import SearchBar from "@/components/SearchBar/index.vue";
 import { useScroll } from "@/hooks/useScroll";
-import { watch, ref } from "vue";
+import { watch, computed } from "vue";
 
+// #region tip: 加载数据
 const homeStore = useHomeStore();
 homeStore.fetchHotSuggests();
 homeStore.fetchCategories();
 homeStore.fetchHouseList();
+// #endregion
 
 // #region tip: 加载更多
 const { isBottom, scrollTop } = useScroll();
@@ -35,12 +40,7 @@ watch(isBottom, (newValue) => {
 // #endregion
 
 // #region tip: 搜索框显隐
-const searchBtnShow = ref(false);
-watch(scrollTop, (newScrollTop) => {
-  if (newScrollTop > 100) {
-    searchBtnShow.value = true;
-  }
-});
+const searchBtnShow = computed(() => scrollTop.value > 400);
 // #endregion
 </script>
 

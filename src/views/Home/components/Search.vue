@@ -11,12 +11,12 @@
       <div class="date-range" @click="dateRangeShow = true">
         <div class="start-date date">
           <div class="date-tip">入住</div>
-          <div class="date-value">{{ startDate }}</div>
+          <div class="date-value">{{ startDateStr }}</div>
         </div>
         <div class="stay-date">共{{ stayDate }}晚</div>
         <div class="end-date date">
           <div class="date-tip">离店</div>
-          <div class="date-value">{{ endDate }}</div>
+          <div class="date-value">{{ endDateStr }}</div>
         </div>
       </div>
       <van-calendar
@@ -63,14 +63,18 @@ import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { formatDate } from "@/utils";
 import useHomeStore from "@/stores/modules/home";
+import useMainStore from "@/stores/modules/main";
+import { computed } from "@vue/reactivity";
+import { ONE_DAY_TIMESTAMP } from "@/utils/const";
 
-// 城市点击逻辑
+// #region tip: 城市点击逻辑
 const router = useRouter();
 const cityHandle = () => {
   router.push("/city");
 };
+// #endregion
 
-// 定位点击逻辑
+// #region tip: 定位点击逻辑
 const positionHandle = () => {
   navigator.geolocation.getCurrentPosition(
     (res) => {
@@ -82,15 +86,21 @@ const positionHandle = () => {
     { timeout: 1000 }
   );
 };
+// #endregion
 
-// 获取城市名字逻辑
+// #region tip: 获取城市名字逻辑
 const cityStore = useCityStore();
 const { currentCity } = storeToRefs(cityStore);
+// #endregion
 
-/* ----------  start: 日期选择逻辑  ---------- */
-const startDate = ref(formatDate(new Date()));
-const stayDate = ref(1);
-const endDate = ref(formatDate(Date.now() + 24 * 60 * 60 * 1000));
+// #region tip: 日期选择逻辑
+const { startDateTimeStamp, endDateTimeStamp } = storeToRefs(useMainStore());
+
+const startDateStr = computed(() => formatDate(startDateTimeStamp.value));
+const endDateStr = computed(() => formatDate(endDateTimeStamp.value));
+const stayDate = computed(
+  () => (endDateTimeStamp.value - startDateTimeStamp.value) / ONE_DAY_TIMESTAMP
+);
 const dateRangeShow = ref(false);
 
 const formatterDateText = (day) => {
@@ -104,35 +114,29 @@ const formatterDateText = (day) => {
 
 const onDateRangeConfirm = (date) => {
   const [_startDate, _endDate] = date;
-  stayDate.value =
-    (new Date(_endDate).getTime() - new Date(_startDate).getTime()) /
-    (24 * 60 * 60 * 1000);
-  startDate.value = formatDate(_startDate);
-  endDate.value = formatDate(_endDate);
+  startDateTimeStamp.value = _startDate;
+  endDateTimeStamp.value = _endDate;
   dateRangeShow.value = false;
 };
+// #endregion
 
-/* ----------  end  ---------- */
-
-/* ----------  start: 热门建议  ---------- */
+// #region tip: 热门建议
 const homeStore = useHomeStore();
 const { hotSuggests } = storeToRefs(homeStore);
-/* ----------  end  ---------- */
+// #endregion
 
-/* ----------  start: 搜索按钮点击  ---------- */
-
+// #region tip: 搜索按钮点击
 const searchHandle = () => {
   router.push({
     path: "/search",
     query: {
-      startDate: startDate.value,
-      endDate: endDate.value,
+      startDateStr: startDateStr.value,
+      endDateStr: endDateStr.value,
       currentCity: currentCity.value.cityName,
     },
   });
 };
-
-/* ----------  end  ---------- */
+// #endregion
 </script>
 
 <style lang="less" scoped>

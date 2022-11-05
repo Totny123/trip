@@ -1,11 +1,12 @@
 import { ref, onMounted, onUnmounted, onActivated, onDeactivated } from "vue";
+import { throttle } from "lodash";
 
 const useScroll = () => {
   const isBottom = ref(false);
   const scrollTop = ref(0);
   const clientHeight = ref(0);
   const scrollHeight = ref(0);
-  const scrollHandle = () => {
+  const scrollHandle = throttle(() => {
     scrollTop.value = document.documentElement.scrollTop;
     clientHeight.value = document.documentElement.clientHeight;
     scrollHeight.value = document.documentElement.scrollHeight;
@@ -14,7 +15,7 @@ const useScroll = () => {
     } else {
       isBottom.value = false;
     }
-  };
+  }, 100);
 
   onMounted(() => {
     window.addEventListener("scroll", scrollHandle);
