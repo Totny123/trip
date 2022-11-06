@@ -8,6 +8,10 @@
     />
     <main class="main" v-if="mainPart">
       <DetailSwipe :swipeData="mainPart.topModule.housePicture.housePics" />
+      <DetailInfos :infos="mainPart.topModule" />
+      <DetailFacility
+        :houseFacility="mainPart.dynamicModule.facilityModule.houseFacility"
+      />
     </main>
   </div>
 </template>
@@ -17,6 +21,8 @@ import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getHouseDetailData } from "@/services";
 import DetailSwipe from "./components/DetailSwipe.vue";
+import DetailInfos from "./components/DetailInfos.vue";
+import DetailFacility from "./components/DetailFacility.vue";
 
 // #region tip: 获取路由和活跃路由
 const router = useRouter();
