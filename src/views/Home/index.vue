@@ -13,6 +13,11 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: "home",
+};
+</script>
 <script setup>
 import NavBar from "./components/NavBar.vue";
 import Search from "./components/Search.vue";
